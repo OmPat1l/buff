@@ -18,7 +18,7 @@ app.use((req, res, next) => {
 });
 
 //if admin wants to view al the data about users
-app.get("/", async (req, res) => {
+app.get("/admin", async (req, res) => {
   try {
     const usersSnapshot = await usercol.get();
     const users = [];
@@ -31,7 +31,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-//to check whether the user exist, if not, create new user
+//logib
 app.post("/login", async (req, res) => {
   let mis = req.body.mis;
   let pass = req.body.password;
