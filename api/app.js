@@ -60,6 +60,41 @@ app.post("/login", async (req, res) => {
   }
 });
 
+//signup
+app.post("/signup", async (req, res) => {
+  let mis = req.body.mis;
+  let password = req.body.password;
+  let mail = req.body.mail;
+  if (!mis || !password || !password) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+  try {
+    const usersSnapshot = await usercol.get();
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+      users.push(doc.data());
+    });
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].mis == mis || users[i].mail == mail) {
+        return res.status(400).json({ error: "Account exists, please login" });
+      }
+    }
+    try {
+      const newUser = await usercol.add({
+        mis,
+        password,
+        mail,
+      });
+      return res.json({ id: newUser.id });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Failed to add user" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Server failed" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
