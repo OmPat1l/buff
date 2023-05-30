@@ -95,6 +95,11 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// app.get("/menu", (req, res) => {
+//     const menucol = db.collection("users");
+    
+// })
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
