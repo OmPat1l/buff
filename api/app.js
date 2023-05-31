@@ -24,7 +24,7 @@ app.get("/menu", async (req, res) => {
     usersSnapshot.forEach((doc) => {
       users.push(doc.data());
     });
-    return res.status(200).json(users);
+    return res.status(200).send(users);
   } catch (error) {
     return res.status(500).json({ error: "Failed to get users" });
   }
