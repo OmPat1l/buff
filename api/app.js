@@ -9,6 +9,7 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 const usercol = db.collection("users");
+const menu = db.collection("menu");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,7 +17,18 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
-
+app.get("/menu", async (req, res) => {
+  try {
+    const usersSnapshot = await menu.get();
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+      users.push(doc.data());
+    });
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to get users" });
+  }
+});
 //if admin wants to view al the data about users
 app.get("/admin", async (req, res) => {
   try {
@@ -94,11 +106,6 @@ app.post("/signup", async (req, res) => {
     return res.status(500).json({ error: "Server failed" });
   }
 });
-
-// app.get("/menu", (req, res) => {
-//     const menucol = db.collection("users");
-    
-// })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
