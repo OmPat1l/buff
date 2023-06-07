@@ -10,6 +10,7 @@ admin.initializeApp({
 const db = admin.firestore();
 const usercol = db.collection("users");
 const menu = db.collection("menu");
+const notification = db.collection("notifications");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -33,6 +34,18 @@ app.get("/menu", async (req, res) => {
 app.get("/admin", async (req, res) => {
   try {
     const usersSnapshot = await usercol.get();
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+      users.push(doc.data());
+    });
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to get users" });
+  }
+});
+app.get("/notification", async (req, res) => {
+  try {
+    const usersSnapshot = await notification.get();
     const users = [];
     usersSnapshot.forEach((doc) => {
       users.push(doc.data());

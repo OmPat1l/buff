@@ -178,15 +178,7 @@
                   ></button>
                 </div>
                 <div class="modal-body">
-                  <ul>
-                    <li>Mess Bill is Ready for this month</li>
-                    <hr />
-                    <li>Mess Bill is Ready for this month</li>
-                    <hr />
-                    <li>Mess Bill is Ready for this month</li>
-                    <hr />
-                    <li>Mess Bill is Ready for this month</li>
-                  </ul>
+                  <ul id="notificationList"></ul>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -222,6 +214,22 @@
     <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <!-- Template Javascript -->
+    <script>
+      // Fetch data from API and populate the list
+      fetch("http://localhost:3005/notification")
+        .then((response) => response.json())
+        .then((data) => {
+          const notificationList = document.getElementById("notificationList");
+          data.forEach((item) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = item.message;
+            notificationList.appendChild(listItem);
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    </script>
     <script src="js/main.js"></script>
     <script
       type="module"
